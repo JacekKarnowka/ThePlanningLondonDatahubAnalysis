@@ -1,0 +1,752 @@
+{% extends 'front/master.html' %}
+{% load static%}
+
+{% block mainblock%}
+
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .row_table {
+            display: flex;
+        }
+
+        .column_table {
+            flex: 50%;
+            padding: 5px;
+        }
+
+        .row {
+            display: flex; /* equal height of the children */
+        }
+
+        .col {
+            flex: 1; /* additionally, equal width */
+
+            padding: 1em;
+        }
+
+        .nav-content-wrapper {
+            position: relative;
+            overflow: auto;
+            display: block;
+        }
+
+        .left-nav {
+            float: left;
+            width: 49%;
+            height: inherit;
+        }
+
+        .content {
+            float: left;
+            width: 50%;
+            height: inherit;
+        }
+    </style>
+</head>
+
+
+
+<!-- First details table -->
+<div class="row">
+
+    <div class="col" style="height: 500px">
+        <div class="block full">
+
+            <div class="block-title">
+                <h2><strong>Application details</strong> </h2>
+            </div>
+            {% for cc in details %}
+            <p style="font-size:120%"> Application ID:  <b> {{cc.App_ID}}</b>, Borough: <b>{{cc.Borough}}</b></p>
+            {% endfor %}
+
+        </div>
+
+        <!-- main details -->
+
+        <div class="block full">
+            <div class="block-title">
+                <h2><strong>Main details</strong> </h2>
+            </div>
+
+            {% for cc in details %}
+
+            <div class="row_table">
+                <div class="column_table">
+                    <table>
+                        <!--<p style="font-size:120%"><strong> Basic app informations</strong>  </b></p>-->
+                        <tr>
+                            <th>Decision Date</th>
+                            <td class="text-center">
+                                {{cc.decision_date}}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Status</th>
+                            <td class="text-center">
+                                {{cc.Status}}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Post Code</th>
+                            <td class="text-center">{{cc.PostCode}}</td>
+                        </tr>
+
+
+
+                        {% if cc.NO_storeys != 'nan' %}
+                        <tr>
+                            <th>Number of storeys</th>
+                            <td class="text-center">{{cc.NO_storeys}}</td>
+                        </tr>
+
+                        {% else %}
+                        <tr>
+                            <th>Number of storeys</th>
+                            <td class="text-center">No data</td>
+                        </tr>
+                        {% endif %}
+
+                        {% if cc.Site_area != 'nan' %}
+                        <tr>
+                            <th>Site Area</th>
+                            <td class="text-center">{{cc.Site_area}}</td>
+                        </tr>
+
+                        {% else %}
+                        <tr>
+                            <th>Site Area</th>
+                            <td class="text-center">No data</td>
+                        </tr>
+                        {% endif %}
+
+                        <tr>
+                            <th>Affordable Percentage</th>
+                            <td class="text-center">{{cc.Affordable_Percentage}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Total residential units</th>
+                            <td class="text-center">
+                                {{cc.NO_proposed_residential_units}}
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+
+
+            {% endfor %}
+
+        </div>
+        <!-- end main details -->
+        <!-- map location -->
+    </div>
+    <div class="col" style="height:500px">
+        <div class="block full">
+
+            {% autoescape off %}
+            {{ app_map_location }}
+            {% endautoescape %}
+        </div>
+
+
+    </div>
+    <!-- end map location -->
+</div>
+<!-- end First details table -->
+<!-- Secound block, tenure details -->
+<div class="row">
+
+    <div class="col" style="height:320px">
+
+        <!-- tenure details -->
+
+        <div class="block full">
+            <div class="block-title">
+                <h2><strong>Tenure details</strong> </h2>
+            </div>
+
+            {% for cc in details %}
+
+            <div class="row_table">
+                <div class="column_table">
+                    <table>
+                        <!--<p style="font-size:120%"><strong> Basic app informations</strong>  </b></p>-->
+                        <tr>
+                            <th>Proposed res. units</th>
+                            <td class="text-center">{{cc.NO_proposed_residential_units}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Affordable Units</th>
+                            <td class="text-center">{{cc.affordable_units}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Market for sale</th>
+                            <td class="text-center">{{cc.market_for_sale}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Market for rent</th>
+                            <td class="text-center">{{cc.market_for_rent}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Starter homes</th>
+                            <td class="text-center">{{cc.starter_homes}}</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+
+
+            {% endfor %}
+
+        </div>
+        <!-- end tenure details -->
+        <!-- tenure pie chart -->
+    </div>
+
+    <div class="col" style="height:320px">
+        <div class="block full">
+
+            {% autoescape off %}
+            {{ tenure_pie_chart }}
+            {% endautoescape %}
+        </div>
+
+
+    </div>
+</div>
+
+
+<!-- 2'nd block, tenure details -->
+<!-- ------------------------------------------------------------------------ -->
+
+<div class="row">
+
+    <div class="col" style="height:400px">
+
+        <div class="block full">
+            <div class="block-title">
+                <h2><strong>Affordable units details</strong> </h2>
+            </div>
+
+            {% for cc in details %}
+
+            <div class="row_table">
+                <div class="column_table">
+                    <table>
+                        <tr>
+                            <th>London living rent</th>
+                            <td class="text-center">{{cc.london_living_rent}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>London affordable rent</th>
+                            <td class="text-center">{{cc.london_affordable_rent}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Social rent units</th>
+                            <td class="text-center">{{cc.sociat_rent_units}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Intermediate</th>
+                            <td class="text-center">{{cc.intermediate}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Market rents charged</th>
+                            <td class="text-center">{{cc.market_rent_charged_london_rents}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Self and custom build</th>
+                            <td class="text-center">{{cc.self_build_and_custom_build}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Discount market rent</th>
+                            <td class="text-center">{{cc.discount_market_rent}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Discount market sale</th>
+                            <td class="text-center">{{cc.discount_market_sale}}</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <div class="col" style="height:400px">
+        <div class="block full">
+
+            {% autoescape off %}
+            {{ affordable_units_plot }}
+            {% endautoescape %}
+        </div>
+
+
+    </div>
+    <!-- end of 2'nd block-->
+</div>
+
+
+<!-- 3'rd block, units types -->
+<!-- ------------------------------------------------------------------------ -->
+
+<div class="row" style="height:400px">
+
+    <div class="col">
+
+        <div class="block full">
+            <div class="block-title">
+                <h2><strong>Units Types</strong> </h2>
+            </div>
+
+            {% for cc in details %}
+
+            <div class="row_table">
+                <div class="column_table">
+                    <table>
+                        <tr>
+                            <th>Studio Bedsit</th>
+                            <td class="text-center">{{cc.Unit_type_Studio_Bedsit}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Apartament Maisonette</th>
+                            <td class="text-center">{{cc.Unit_type_Flat_Apartment_Maisonette}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Provider housing association</th>
+                            <td class="text-center">{{cc.Provider_Housing_Association}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Provider private rented sector</th>
+                            <td class="text-center">{{cc.Provider_Private_rented_sector}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Provider Private</th>
+                            <td class="text-center">{{cc.Provider_Private}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Changed of use</th>
+                            <td class="text-center">{{cc.Development_type_Change_of_Use}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>New Build</th>
+                            <td class="text-center">{{cc.Development_type_New_Build}}</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <div class="col" style="height:400px">
+        <div class="block full">
+
+            {% autoescape off %}
+            {{ units_types_plot }}
+            {% endautoescape %}
+        </div>
+
+
+    </div>
+    <!-- end of 3'rd block-->
+</div>
+
+
+
+
+
+
+
+<div class="row" style="height:400px">
+
+    <div class="col">
+
+        <div class="block full">
+            <div class="block-title">
+                <h2><strong>Units Types</strong> </h2>
+            </div>
+
+            {% for cc in details %}
+
+            <div class="row_table">
+                <div class="column_table">
+                    <table>
+                        <tr>
+                            <th>Floorspace use class</th>
+                            <td class="text-center">{{cc.floorspace_detail_use_class}}</td>
+                        </tr>
+
+                        {% if cc.floorspace_detail_actual_completion_date != 'nan' %}
+                        <tr>
+                            <th>Floorspace actual completion date</th>
+                            <td class="text-center">{{cc.floorspace_detail_actual_completion_date}}</td>
+                        </tr>
+                        {% endif %}
+
+                        <tr>
+                            <th>Floorspace GIA existing</th>
+                            <td class="text-center">{{cc.floorspace_detail_gia_existing}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Floorspace GIA gained</th>
+                            <td class="text-center">{{cc.floorspace_detail_gia_gained}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Floorspace GIA lost</th>
+                            <td class="text-center">{{cc.floorspace_detail_gia_lost}}</td>
+                        </tr>
+
+                        {% if cc.floorspace_detail_superseded_by_lpa_app_no != 'nan' %}
+                        <tr>
+                            <th>Floorspace superseded by lpa app no</th>
+                            <td class="text-center">{{cc.floorspace_detail_superseded_by_lpa_app_no}}</td>
+                        </tr>
+                        {% endif %}
+
+                        {% if cc.floorspace_detail_superseded_date != 'nan' %}
+                        <tr>
+                            <th>Floorspace superseded date</th>
+                            <td class="text-center">{{cc.floorspace_detail_superseded_date}}</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
+
+            </div>
+
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <div class="col" style="height:400px">
+        <div class="block full">
+
+            {% autoescape off %}
+            {{ line_GIA_plot }}
+            {% endautoescape %}
+        </div>
+
+
+    </div>
+    <!-- end of 3'rd block-->
+</div>
+
+
+
+
+
+<!--<div class="block full">
+    <div class="block-title">
+        <h2><strong>Floorspace details</strong> </h2>
+    </div>
+
+    {% for cc in details %}
+
+    <div class="row_table">
+        <div class="column_table">
+            <table>-->
+                <!--<p style="font-size:120%"><strong> Basic app informations</strong>  </b></p>-->
+
+                <!--<tr>
+                    <th>Floorspace use class</th>
+                    <td class="text-center">{{cc.floorspace_detail_use_class}}</td>
+                </tr>
+
+                {% if cc.floorspace_detail_actual_completion_date != 'nan' %}
+                <tr>
+                    <th>Floorspace actual completion date</th>
+                    <td class="text-center">{{cc.floorspace_detail_actual_completion_date}}</td>
+                </tr>
+                {% endif %}
+
+                <tr>
+                    <th>Floorspace GIA existing</th>
+                    <td class="text-center">{{cc.floorspace_detail_gia_existing}}</td>
+                </tr>
+
+                <tr>
+                    <th>Floorspace GIA gained</th>
+                    <td class="text-center">{{cc.floorspace_detail_gia_gained}}</td>
+                </tr>
+
+                <tr>
+                    <th>Floorspace GIA lost</th>
+                    <td class="text-center">{{cc.floorspace_detail_gia_lost}}</td>
+                </tr>
+
+                {% if cc.floorspace_detail_superseded_by_lpa_app_no != 'nan' %}
+                <tr>
+                    <th>Floorspace superseded by lpa app no</th>
+                    <td class="text-center">{{cc.floorspace_detail_superseded_by_lpa_app_no}}</td>
+                </tr>
+                {% endif %}
+
+                {% if cc.floorspace_detail_superseded_date != 'nan' %}
+                <tr>
+                    <th>Floorspace superseded date</th>
+                    <td class="text-center">{{cc.floorspace_detail_superseded_date}}</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+
+    </div>
+
+
+    {% endfor %}
+
+</div>-->
+
+<div class="block full">
+    <div class="block-title">
+        <h2><strong>Parking details</strong> </h2>
+    </div>
+
+    <div class="row_table">
+        <div class="column_table">
+            <table>
+                <!--<p style="font-size:120%"><strong> Basic app informations</strong>  </b></p>-->
+
+                {% for key, value in parking_dict.items %}
+                    {% if value != 'nan' %}
+                        <tr>
+                            <th>{{key}}</th>
+                            <td class="text-center">
+                                {{value}}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+
+                <!--<tr>
+        <th>parking_net_bluebadge</th>
+        <td class="text-center">{{cc.parking_net_bluebadge}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_net_bus</th>
+        <td class="text-center">{{cc.parking_net_bus}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_net_carclub</th>
+        <td class="text-center">{{cc.parking_net_carclub}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_net_cycle</th>
+        <td class="text-center">{{cc.parking_net_cycle}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_net_lgvt</th>
+        <td class="text-center">{{cc.parking_net_lgv}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_net_car</th>
+        <td class="text-center">{{cc.parking_net_car}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_net_motorcycle</th>
+        <td class="text-center">{{cc.parking_net_motorcycle}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_net_other</th>
+        <td class="text-center">{{cc.parking_net_other}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_net_resi_offstreet</th>
+        <td class="text-center">{{cc.parking_net_resi_offstreet}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_existing_bluebadge</th>
+        <td class="text-center">{{cc.parking_no_existing_bluebadge}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_existing_bus</th>
+        <td class="text-center">{{cc.parking_no_existing_bus}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_existing_car</th>
+        <td class="text-center">{{cc.parking_no_existing_car}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_existing_carclub</th>
+        <td class="text-center">{{cc.parking_no_existing_carclub}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_existing_cycle</th>
+        <td class="text-center">{{cc.parking_no_existing_cycle}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_existing_lgv</th>
+        <td class="text-center">{{cc.parking_no_existing_lgv}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_existing_motorcycle</th>
+        <td class="text-center">{{cc.parking_no_existing_motorcycle}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_existing_other</th>
+        <td class="text-center">{{cc.parking_no_existing_other}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_existing_resi_offstreet</th>
+        <td class="text-center">{{cc.parking_no_existing_resi_offstreet}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_proposed_bluebadge</th>
+        <td class="text-center">{{cc.parking_no_proposed_bluebadge}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_proposed_bus</th>
+        <td class="text-center">{{cc.parking_no_proposed_bus}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_proposed_car</th>
+        <td class="text-center">{{cc.parking_no_proposed_car}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_proposed_carclub</th>
+        <td class="text-center">{{cc.parking_no_proposed_carclub}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_proposed_cycle</th>
+        <td class="text-center">{{cc.parking_no_proposed_cycle}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_proposed_lgv</th>
+        <td class="text-center">{{cc.parking_no_proposed_lgv}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_proposed_motorcycle</th>
+        <td class="text-center">{{cc.parking_no_proposed_motorcycle}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_proposed_other</th>
+        <td class="text-center">{{cc.parking_no_proposed_other}}</td>
+    </tr>
+
+    <tr>
+        <th>parking_no_proposed_resi_offstreet</th>
+        <td class="text-center">{{cc.parking_no_proposed_resi_offstreet}}</td>
+    </tr>-->
+            </table>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+    {% endblock %}
+
+    {% block footerblock %}
+
+<!-- Load and execute javascript code used only in this page -->
+<script src="{%static 'back/img/favicon.png' %}js/pages/index.js"></script>
+<script>$(function () { Index.init(); });</script>
+<!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+<script src="{%static 'front/js/vendor/jquery.min.js' %}"></script>
+<script src="{%static 'front/js/vendor/bootstrap.min.js' %}"></script>
+<script src="{%static 'front/js/plugins.js' %}"></script>
+<script src="{%static 'front/js/app.js' %}"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="{%static 'back/js/helpers/gmaps.min.js' %}"></script>
+
+<!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+<script src="{% static 'front/js/vendor/jquery.min.js' %}"></script>
+<script src="{% static 'front/js/vendor/bootstrap.min.js' %}"></script>
+<script src="{% static 'front/js/plugins.js' %}"></script>
+<script src="{% static 'front/js/app.js' %}"></script>
+
+<!-- Load and execute javascript code used only in this page -->
+<script src="{% static 'front/js/pages/tablesDatatables.js' %}"></script>
+<script>$(function () { TablesDatatables.init(); });</script>
+
+    {% endblock %}
+
+
+
+

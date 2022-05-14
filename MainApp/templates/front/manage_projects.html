@@ -1,0 +1,253 @@
+{% extends 'front/master.html' %}
+{% load static%}
+
+{% block mainblock%}
+
+<head>
+    <style>
+        .lbl {
+            font-size: larger;
+            /*position: absolute;*/
+            text-align: center;
+            bottom: 0;
+            width: 100%;
+            left: 10%;
+        }
+    </style>
+</head>
+
+
+
+<div class="block">
+    <!-- Sliders Title -->
+    <div class="block-title">
+
+        <h2><strong>Delete existing projects</strong></h2>
+    </div>
+    <!-- END Sliders Title -->
+    <!-- Sliders Content -->
+    <form action="{%url 'manage_projects'%}" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered">
+        <!-- Slider for Bootstrap (class is initialized in js/app.js -> uiInit()), for extra usage examples you can check out http://www.eyecon.ro/bootstrap-slider -->
+        {% csrf_token %}
+        <p></p>
+        <label class="lbl" for="example-chosen-multiple">Choose existing project to delete</label>
+        <div class="col-md-12">
+            <select id="choose_project" name="choose_project" class="select-chosen" data-placeholder="Choose projects..." style="width: 250px;" multiple>
+
+                {% for i in project_list %}
+                <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+
+            </select>
+        </div>
+
+
+        <div class="form-group form-actions">
+            <div class="col-md-12">
+                <p></p>
+                <button type="submit" name="delete_project" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Delete</button>
+            </div>
+        </div>
+
+    </form>
+    <!-- END Sliders Content -->
+</div>
+
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- Basic Form Elements Block -->
+        <div class="block">
+            <!-- Basic Form Elements Title -->
+            <div class="block-title">
+                <h2><strong>Create new project</strong>  </h2>
+            </div>
+            <p>
+                No data -> leave empty field
+            </p>
+            <!-- END Form Elements Title -->
+            <!-- Basic Form Elements Content -->
+            <form action="{%url 'manage_projects'%}" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="col-md-6">
+
+                        <script>
+
+                            var name_list = [
+
+                                // Main informations
+                                //'source',
+                                'App_ID',
+                                'Borough',
+                                //'decision_date',
+                                //'Units_info',
+                                'PostCode',
+                                'latitude',
+                                'longitude',
+
+                                // Main information about building
+                                'NO_storeys',
+                                'Dwelling_density',
+                                'NO_proposed_residential_units',
+                                'Site_area',
+                                //'Site_Ares',
+
+                                // Affordable percengage and unts
+                                'Affordable_Percentage',
+                                'market_for_sale',
+                                'market_for_rent',
+                                'affordable_units',
+                                'starter_homes',
+
+
+                                //Affordable units details:
+                                'london_living_rent',
+                                'london_affordable_rent',
+                                'sociat_rent_units',
+                                'intermediate',
+                                'market_rent_charged_london_rents',
+                                'self_build_and_custom_build',
+                                'discount_market_rent',
+                                'discount_market_sale',
+
+
+                                // Units types
+                                'Unit_type_Studio_Bedsit',
+                                'Unit_type_Flat_Apartment_Maisonette',
+                                'Provider_Local_Authority',
+                                'Provider_Private_rented_sector',
+                                'Provider_Private',
+                                'Provider_Housing_Association',
+                                'Development_type_New_Build',
+                                'Development_type_Change_of_Use',
+
+                                // Units types
+                                'floorspace_detail_actual_completion_date',
+                                'floorspace_detail_gia_existing',
+                                'floorspace_detail_gia_gained',
+                                'floorspace_detail_gia_lost',
+                                'floorspace_detail_superseded_by_lpa_app_no',
+                                'floorspace_detail_superseded_date',
+                                'floorspace_detail_use_class',
+
+
+                                //'app_det_res_units_change_type',
+                                //'app_det_res_units_tenure',
+                                //'Status',
+                                //'app_det_left_total_no_proposed_bedrooms',
+                                //'NO_proposed_residential_units',
+                                //'affordable_rent',
+                                //'Existing_residential_affordable_units',
+                                //'habitable_rooms_density',
+                                //'Existing_residential_affordable_rent',
+                                //'Existing_residential_London_shared_ownership',
+                                //'Existing_residential_London_affordable_rent',
+                                //'Existing_residential_units',
+                                //'centroid',
+                                //'polygon',
+                                //'ward',
+                                //'decision_agency',
+                                //'site_name',
+                                //'lpa_app_no',
+                                
+                                
+
+                                //'Polygon_coords',
+                                //'color',
+                                
+                                //'parking_net_bluebadge',
+                                //'parking_net_bus',
+                                //'parking_net_carclub',
+                                //'parking_net_cycle',
+                                //'parking_net_lgv',
+                                //'parking_net_car',
+                                //'parking_net_motorcycle',
+                                //'parking_net_other',
+                                //'parking_net_resi_offstreet',
+                                //'parking_no_existing_bluebadge',
+                                //'parking_no_existing_bus',
+                                //'parking_no_existing_car',
+                                //'parking_no_existing_carclub',
+                                //'parking_no_existing_cycle',
+                                //'parking_no_existing_lgv',
+                                //'parking_no_existing_motorcycle',
+                                //'parking_no_existing_other',
+                                //'parking_no_existing_resi_offstreet',
+                                //'parking_no_proposed_bluebadge',
+                                //'parking_no_proposed_bus',
+                                //'parking_no_proposed_car',
+                                //'parking_no_proposed_carclub',
+                                //'parking_no_proposed_cycle',
+                                //'parking_no_proposed_lgv',
+                                //'parking_no_proposed_motorcycle',
+                                //'parking_no_proposed_other',
+                                //'parking_no_proposed_resi_offstreet'
+                            ]
+
+                            for (var i = 0; i < name_list.length; i++) {
+                                if (name_list[i] == 'App_ID') {
+                                    document.write('<input type="text" id=' + name_list[i] + ' name=' + name_list[i] + ' class="form-control" placeholder=' + "Project " + " name" + '>');
+
+                                }
+                                else {
+                                    document.write('<input type="text" id=' + name_list[i] + ' name=' + name_list[i] + ' class="form-control" placeholder=' + name_list[i] + '>');
+
+                                }
+                            }
+
+
+
+                        </script>
+                    </div>
+
+                    <div class="form-group form-actions">
+                        <div class="col-md-12">
+                            <p></p>
+                            <button type="submit" name ="add_project" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Submit</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </form>
+            <!-- END Basic Form Elements Content -->
+        </div>
+        <!-- END Basic Form Elements Block -->
+    </div>
+</div>
+
+
+<!-- END Sliders Block -->
+ {% endblock %}
+
+
+
+    {% block footerblock %}
+
+<!-- Load and execute javascript code used only in this page -->
+<script src="{%static 'back/img/favicon.png' %}js/pages/index.js"></script>
+<script>$(function () { Index.init(); });</script>
+<!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+<script src="{%static 'front/js/vendor/jquery.min.js' %}"></script>
+<script src="{%static 'front/js/vendor/bootstrap.min.js' %}"></script>
+<script src="{%static 'front/js/plugins.js' %}"></script>
+<script src="{%static 'front/js/app.js' %}"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="{%static 'back/js/helpers/gmaps.min.js' %}"></script>
+
+<!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+<script src="{% static 'front/js/vendor/jquery.min.js' %}"></script>
+<script src="{% static 'front/js/vendor/bootstrap.min.js' %}"></script>
+<script src="{% static 'front/js/plugins.js' %}"></script>
+<script src="{% static 'front/js/app.js' %}"></script>
+
+<!-- Load and execute javascript code used only in this page -->
+<script src="{% static 'front/js/pages/tablesDatatables.js' %}"></script>
+<script>$(function () { TablesDatatables.init(); });</script>
+
+    {% endblock %}

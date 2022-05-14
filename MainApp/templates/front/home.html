@@ -1,0 +1,45 @@
+{% extends 'front/master.html' %}
+{% load static%}
+
+{% block mainblock%}
+
+<div class="block full">
+    <div class="block-title">
+        <h1><strong>Description of the project</strong> maybe some images</h1>
+    </div>
+    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
+    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</div>
+
+    <!-- END Sliders Block -->
+    {% endblock %}
+
+
+
+    {% block footerblock %}
+
+    <!-- Load and execute javascript code used only in this page -->
+    <script src="{%static 'back/img/favicon.png' %}js/pages/index.js"></script>
+    <script>$(function () { Index.init(); });</script>
+    <!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+    <script src="{%static 'front/js/vendor/jquery.min.js' %}"></script>
+    <script src="{%static 'front/js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{%static 'front/js/plugins.js' %}"></script>
+    <script src="{%static 'front/js/app.js' %}"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{%static 'back/js/helpers/gmaps.min.js' %}"></script>
+
+    <!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+    <script src="{% static 'front/js/vendor/jquery.min.js' %}"></script>
+    <script src="{% static 'front/js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'front/js/plugins.js' %}"></script>
+    <script src="{% static 'front/js/app.js' %}"></script>
+
+    <!-- Load and execute javascript code used only in this page -->
+    <script src="{% static 'front/js/pages/tablesDatatables.js' %}"></script>
+    <script>$(function () { TablesDatatables.init(); });</script>
+
+    {% endblock %}

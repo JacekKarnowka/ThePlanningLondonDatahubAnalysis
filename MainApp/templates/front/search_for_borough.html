@@ -1,0 +1,134 @@
+{% extends 'front/master.html' %}
+{% load static%}
+
+{% block mainblock%}
+
+<head>
+    <style>
+        .lbl {
+            font-size: larger;
+            /*position: absolute;*/
+            text-align: center;
+            bottom: 0;
+            width: 100%;
+            left: 10%;
+        }
+    </style>
+</head>
+
+
+
+<div class="block">
+    <!-- Sliders Title -->
+    <div class="block-title">
+
+        <h2><strong>Settings</strong></h2>
+    </div>
+    <!-- END Sliders Title -->
+    <!-- Sliders Content -->
+    <form action="{%url 'search_for_borough'%}" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered">
+        <!-- Slider for Bootstrap (class is initialized in js/app.js -> uiInit()), for extra usage examples you can check out http://www.eyecon.ro/bootstrap-slider -->
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="lbl">Choose years range and lpa name</label>
+            <div class="col-md-12">
+
+                <div class="col-md-6">
+                    <div class="input-group input-daterange" data-date-format="mm/dd/yyyy">
+                        <input type="text" id="date_from" name="date_from" class="form-control text-center" placeholder="From">
+                        <span class="input-group-addon"><i class="fa fa-angle-right"></i></span>
+                        <input type="text" id="date_to" name="date_to" class="form-control text-center" placeholder="To">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <select id="choose_borough" name="choose_borough" class="select-chosen" data-placeholder="Choose lpa..." style="width: 250px;" multiple>
+
+                        <option value="All options">All options</option>
+
+                        <option value="Barking & Dagenham">Barking & Dagenham</option>
+                        <option value="Barnet">Barnet</option>
+                        <option value="Bexley">Bexley</option>
+                        <option value="Brent">Brent</option>
+                        <option value="Bromley">Bromley</option>
+                        <option value="Camden">Camden</option>
+                        <option value="City of London">City of London</option>
+                        <option value="Croydon">Croydon</option>
+                        <option value="Ealing">Ealing</option>
+                        <option value="Enfield">Enfield</option>
+                        <option value="Greenwich">Greenwich</option>
+                        <option value="Hackney">Hackney</option>
+                        <option value="Hammersmith & Fulham">Hammersmith & Fulham</option>
+                        <option value="Haringey">Haringey</option>
+                        <option value="Harrow">Harrow</option>
+                        <option value="Havering">Havering</option>
+                        <option value="Hillingdon">Hillingdon</option>
+                        <option value="Hounslow">Hounslow</option>
+                        <option value="Islington">Islington</option>
+                        <option value="Kingston">Kingston</option>
+                        <option value="Lambeth">Lambeth</option>
+                        <option value="Lewisham">Lewisham</option>
+                        <option value="LLDC">LLDC</option>
+                        <option value="Merton">Merton</option>
+                        <option value="Newham">Newham</option>
+                        <option value="OPDC">OPDC</option>
+                        <option value="Kensington & Chelsea">Kensington & Chelsea</option>
+                        <option value="Redbridge">Redbridge</option>
+                        <option value="Richmond">Richmond</option>
+                        <option value="Southwark">Southwark</option>
+                        <option value="Sutton">Sutton</option>
+                        <option value="Tower Hamlets">Tower Hamlets</option>
+                        <option value="Waltham Forest">Waltham Forest</option>
+                        <option value="Wandsworth">Wandsworth</option>
+                        <option value="Westminster">Westminster</option>
+
+
+                    </select>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="form-group form-actions">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Submit</button>
+            </div>
+        </div>
+
+    </form>
+    <!-- END Sliders Content -->
+</div>
+
+
+
+
+<!-- END Sliders Block -->
+ {% endblock %}
+
+
+
+    {% block footerblock %}
+
+<!-- Load and execute javascript code used only in this page -->
+<script src="{%static 'back/img/favicon.png' %}js/pages/index.js"></script>
+<script>$(function () { Index.init(); });</script>
+<!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+<script src="{%static 'front/js/vendor/jquery.min.js' %}"></script>
+<script src="{%static 'front/js/vendor/bootstrap.min.js' %}"></script>
+<script src="{%static 'front/js/plugins.js' %}"></script>
+<script src="{%static 'front/js/app.js' %}"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="{%static 'back/js/helpers/gmaps.min.js' %}"></script>
+
+<!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+<script src="{% static 'front/js/vendor/jquery.min.js' %}"></script>
+<script src="{% static 'front/js/vendor/bootstrap.min.js' %}"></script>
+<script src="{% static 'front/js/plugins.js' %}"></script>
+<script src="{% static 'front/js/app.js' %}"></script>
+
+<!-- Load and execute javascript code used only in this page -->
+<script src="{% static 'front/js/pages/tablesDatatables.js' %}"></script>
+<script>$(function () { TablesDatatables.init(); });</script>
+
+    {% endblock %}

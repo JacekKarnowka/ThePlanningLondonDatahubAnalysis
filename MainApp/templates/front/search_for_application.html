@@ -1,0 +1,307 @@
+{% extends 'front/master.html' %}
+{% load static%}
+{%load plotly_dash%}
+{% block mainblock%}
+
+<head>
+    <style>
+        .lbl {
+            font-size: larger;
+            /*position: absolute;*/
+            text-align: center;
+            bottom: 0;
+            width: 100%;
+            left: 10%;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .row_table {
+            display: flex;
+        }
+
+        .column_table {
+            flex: 50%;
+            padding: 5px;
+        }
+
+        .row {
+            display: flex; /* equal height of the children */
+        }
+
+        .col {
+            flex: 1; /* additionally, equal width */
+
+            padding: 1em;
+        }
+
+        .nav-content-wrapper {
+            position: relative;
+            overflow: auto;
+            display: block;
+        }
+
+        .left-nav {
+            float: left;
+            width: 49%;
+            height: inherit;
+        }
+
+        .content {
+            float: left;
+            width: 50%;
+            height: inherit;
+        }
+    </style>
+</head>
+
+
+<div class="block">
+    <!-- Sliders Title -->
+    <div class="block-title">
+
+        <h2><strong>Settings</strong></h2>
+    </div>
+    <!-- END Sliders Title -->
+    <!-- Sliders Content -->
+    <form action="{%url 'search_for_application'%}" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered">
+        <!-- Slider for Bootstrap (class is initialized in js/app.js -> uiInit()), for extra usage examples you can check out http://www.eyecon.ro/bootstrap-slider -->
+        {% csrf_token %}
+        
+
+
+        <div class="form-group form-actions">
+            <div class="col-md-12">
+                <p></p>
+                <button type="submit" name ="all_apps" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Submit</button>
+            </div>
+        </div>
+
+    </form>
+    <!-- END Sliders Content -->
+</div>
+
+
+
+
+<div class="block">
+    <!-- Sliders Title -->
+    <div class="block-title">
+
+        <h2><strong>Settings</strong></h2>
+    </div>
+    <!-- END Sliders Title -->
+    <!-- Sliders Content -->
+    <form action="{%url 'search_for_application'%}" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered">
+        <!-- Slider for Bootstrap (class is initialized in js/app.js -> uiInit()), for extra usage examples you can check out http://www.eyecon.ro/bootstrap-slider -->
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="col-md-12">
+                <label class="lbl">Site Area [0:50]</label>
+                <input type="text" id="site_area" data-slider-value="[0,50]" name="site_area" class="form-control input-slider" data-slider-min="0" data-slider-max="50" data-slider-step="0.1" data-slider-value="5" data-slider-orientation="horizontal" data-slider-selection="before" data-slider-tooltip="show">
+
+                <label class="lbl">Number of units [1:inf]</label>
+                <input type="text" id="units_filter" data-slider-value="[1,100000]" name="units_filter" class="form-control input-slider" data-slider-min="1" data-slider-max="100000" data-slider-step="1" data-slider-value="5" data-slider-orientation="horizontal" data-slider-selection="before" data-slider-tooltip="show">
+                <label class="lbl" for="example-daterange1">Select Date Range</label>
+
+                <div class="col-md-12">
+                    <div class="input-group input-daterange" data-date-format="mm/dd/yyyy">
+                        <input type="text" id="date_from" name="date_from" class="form-control text-center" placeholder="From">
+                        <span class="input-group-addon"><i class="fa fa-angle-right"></i></span>
+                        <input type="text" id="date_to" name="date_to" class="form-control text-center" placeholder="To">
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <label class="lbl" for="example-chosen-multiple">Choose status</label>
+        <div class="col-md-12">
+            <select id="choose_status" name="choose_status" class="select-chosen" data-placeholder="Choose status..." style="width: 250px;" multiple>
+
+                <option value="All options">All options</option>
+
+                <option value="Allowed">Allowed</option>
+                <option value="Approved">Approved</option>
+                <option value="Commenced">Commenced</option>
+                <option value="Completed">Completed</option>
+                <option value="Superseded">Superseded</option>
+
+
+                <option value="Dismissed">Dismissed</option>
+                <option value="Refused">Refused</option>
+                <option value="Unknown">Unknown</option>
+                <option value="Closed">Closed</option>
+                <option value="Quashed">Quashed</option>
+                <option value="Lapsed">Lapsed</option>
+                <option value="Withdrawn">Withdrawn</option>
+                <option value="Appeal Received">Appeal Received</option>
+
+                <option value="Declined to Determine">Declined to Determine</option>
+                <option value="Application Under Consideration">Application Under Consideration</option>
+                <option value="Called in by Secretary of State">Called in by Secretary of State</option>
+                <option value="Comment Issued">Comment Issued</option>
+                <option value="Appeal In Progress">Appeal In Progress</option>
+                <option value="Insufficient Fee">Insufficient Fee</option>
+                <option value="No Objection to Proposal (OBS only)">No Objection to Proposal (OBS only)</option>
+                <option value="Not Required">Not Required</option>
+                <option value="Objection Raised to Proposal (OBS only)">Objection Raised to Proposal (OBS only)</option>
+                <option value="Opinion Issued">Opinion Issued</option>
+                <option value="Pre-application Advice Case Completed">Pre-application Advice Case Completed</option>
+                <option value="Split Decision">Split Decision</option>
+                <option value="Application Invalid">Application Invalid</option>
+                <option value="Application Received">Application Received</option>
+
+                <option value="Pending Legacy Record">Pending Legacy Record</option>
+                <option value="Referred to Mayor">Referred to Mayor</option>
+
+
+            </select>
+            <p></p>
+        </div>
+        <!--<p></p>
+        <label class="lbl" for="example-chosen-multiple">Choose created project for comparison</label>
+        <div class="col-md-12">
+            <select id="choose_project" name="choose_project" class="select-chosen" data-placeholder="Choose projects..." style="width: 250px;" multiple>
+
+                {% for i in projects_database %}
+                <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+
+            </select>
+        </div>-->
+
+
+        <div class="form-group form-actions">
+            <div class="col-md-12">
+                <p></p>
+                <button type="submit" name ="search_filter" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Submit</button>
+            </div>
+        </div>
+
+    </form>
+    <!-- END Sliders Content -->
+</div>
+
+<div class="block full">
+    <div class="block-title">
+        <h2><strong>Tenure Data</strong> table</h2>
+    </div>
+    <p> Tenure data for selected settings</p>
+
+    <div class="table-responsive">
+        <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
+            <thead>
+                <tr>
+
+                    <th>App ID</th>
+                    <th>Borough</th>
+                    <th>Post Code</th>
+
+                    <th>Decision Date</th>
+                    <th>Status</th>
+
+                    <th>Affordable Percentage</th>
+
+                    <th>Dwelling Density</th>
+                    <th>NO Storeys</th>
+                    <th>Total res. units</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for cc in tenure_data %}
+                <tr>
+
+                    <td class="text-center"> <a href="{%url 'aplication_details' word=cc.App_ID %}"><span> {{cc.App_ID}} </span></a></td>
+                    <td class="text-center">{{cc.Borough}}</td>
+                    <td class="text-center">{{cc.PostCode}}</td>
+                    <td class="text-center">{{cc.decision_date}}</td>
+                    <td class="text-center">{{cc.Status}}</td>
+
+                    <td class="text-center">{{cc.Affordable_Percentage}}</td>
+
+                    <td class="text-center">{{cc.Dwelling_density}}</td>
+                    <td class="text-center">{{cc.NO_storeys}}</td>
+                    <td class="text-center">{{cc.NO_proposed_residential_units}}</td>
+
+
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+<html>
+    <head>
+    
+    {% load plotly_dash%}
+    
+    {% plotly_header %}
+    
+    </head>
+    <body>
+    
+    {%plotly_direct name="SimpleExample"%}
+    
+    </body>
+    {% plotly_footer %}
+</html>
+
+
+<!-- {% plotly_app name="SimpleExample" ratio=1 %} -->
+
+
+
+<!-- END Sliders Block -->
+{% endblock %}
+
+
+
+{% block footerblock %}
+
+<!-- Load and execute javascript code used only in this page -->
+<script src="{%static 'back/img/favicon.png' %}js/pages/index.js"></script>
+<script>$(function () { Index.init(); });</script>
+<!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+<script src="{%static 'front/js/vendor/jquery.min.js' %}"></script>
+<script src="{%static 'front/js/vendor/bootstrap.min.js' %}"></script>
+<script src="{%static 'front/js/plugins.js' %}"></script>
+<script src="{%static 'front/js/app.js' %}"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="{%static 'back/js/helpers/gmaps.min.js' %}"></script>
+
+<!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+<script src="{% static 'front/js/vendor/jquery.min.js' %}"></script>
+<script src="{% static 'front/js/vendor/bootstrap.min.js' %}"></script>
+<script src="{% static 'front/js/plugins.js' %}"></script>
+<script src="{% static 'front/js/app.js' %}"></script>
+
+<!-- Load and execute javascript code used only in this page -->
+<script src="{% static 'front/js/pages/tablesDatatables.js' %}"></script>
+<script>$(function () { TablesDatatables.init(); });</script>
+
+{% endblock %}

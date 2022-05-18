@@ -44,7 +44,7 @@ Table and pie chart graph represents data statistics grouped by planning applica
 - Pandas,
 
 
-##### Video belows shows example projest usage. 
+##### Video belows shows example project usage. 
 
 
 https://user-images.githubusercontent.com/95350394/168568611-80cdcff2-ed8d-4065-935b-9f88c5bec540.mp4

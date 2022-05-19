@@ -55,7 +55,6 @@ def get_status_color(df):
         if x == "Submited"
         else "rgb(155,153,155)"
     )
-
     return df
 
 
@@ -111,21 +110,27 @@ def change_column_names(df):
 # floorspace_detail_gia_lost
 def GIA_plot_data(df, app_id):
 
-    if float(df[df["App_ID"] == app_id]["floorspace_detail_gia_gained"]) > float(
-        df[df["App_ID"] == app_id]["floorspace_detail_gia_lost"]
-    ):
-        y_values = [
-            float(df[df["App_ID"] == app_id]["floorspace_detail_gia_existing"]),
-            float(df[df["App_ID"] == app_id]["floorspace_detail_gia_gained"]),
-        ]
+    if app_id in df['App_ID']:
+        raise TypeError("Wrong app_id, not in the DataFrame")
 
-    elif float(df[df["App_ID"] == app_id]["floorspace_detail_gia_gained"]) < float(
-        df[df["App_ID"] == app_id]["floorspace_detail_gia_lost"]
-    ):
-        y_values = [
-            float(df[df["App_ID"] == app_id]["floorspace_detail_gia_lost"]),
-            float(df[df["App_ID"] == app_id]["floorspace_detail_gia_existing"]),
-        ]
+    try:
+        if float(df[df["App_ID"] == app_id]["floorspace_detail_gia_gained"]) > float(
+            df[df["App_ID"] == app_id]["floorspace_detail_gia_lost"]
+        ):
+            y_values = [
+                float(df[df["App_ID"] == app_id]["floorspace_detail_gia_existing"]),
+                float(df[df["App_ID"] == app_id]["floorspace_detail_gia_gained"]),
+            ]
+
+        elif float(df[df["App_ID"] == app_id]["floorspace_detail_gia_gained"]) <= float(
+            df[df["App_ID"] == app_id]["floorspace_detail_gia_lost"]
+        ):
+            y_values = [
+                float(df[df["App_ID"] == app_id]["floorspace_detail_gia_lost"]),
+                float(df[df["App_ID"] == app_id]["floorspace_detail_gia_existing"]),
+            ]
+    except ValueError:
+        raise ValueError("Not a number!")
 
     x_values = [1, 2]
 

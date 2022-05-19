@@ -17,20 +17,19 @@ Including another URLconf
 """
 
 # Uncomment next two lines to enable admin:
-#from django.contrib import admin
-#from django.urls import path
+# from django.contrib import admin
+# from django.urls import path
 
 from django.urls import include, re_path
 from django import urls
 
 from django.contrib import admin
 from django.urls import path
-#from Graph_1 import plotly_app
+
+# from Graph_1 import plotly_app
 
 urlpatterns = [
-
-    re_path(r'^admin/', admin.site.urls),
-    re_path(r'', include('MainApp.urls')),
-    re_path(r'', include('MyProjects.urls'))
-
+    re_path(r"^admin/", admin.site.urls),
+    re_path(r"", include("MainApp.urls")),
+    re_path(r"", include("MyProjects.urls")),
 ]
